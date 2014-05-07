@@ -1,6 +1,5 @@
 package com.baasbox.dao;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +67,7 @@ public class FileDao extends NodeDao  {
 		file.field(CONTENT_TYPE_FIELD_NAME,contentType);
 		file.field(CONTENT_LENGTH_FIELD_NAME,new Long(contentLength));
 		if (metadata!=null){
-			file.field(METADATA_FIELD_NAME,(new ODocument()).fromJSON(new JSONObject(metadata).toString()));			
+            file.field(METADATA_FIELD_NAME,(new ODocument()).fromJSON(new JSONObject(metadata).toString()));
 		}
 		if (!StringUtils.isEmpty(contentString)){
 			file.field(FILE_CONTENT_FIELD_NAME,(new ODocument(FILE_CONTENT_CLASS)).field("content",contentString));

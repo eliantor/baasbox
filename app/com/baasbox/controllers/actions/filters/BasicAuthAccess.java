@@ -21,6 +21,8 @@ import java.io.UnsupportedEncodingException;
 
 import com.baasbox.security.SessionKeys;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Base64;
 import play.Logger;
 import play.mvc.Http;
 import play.mvc.Http.Context;
@@ -58,12 +60,13 @@ public class BasicAuthAccess  implements IAccessMethod {
 		try {
 			String auth = authHeader.substring(6);
 			if (Logger.isDebugEnabled()) Logger.debug(AUTHORIZATION + ": " + auth);
-			decodedAuth = new sun.misc.BASE64Decoder().decodeBuffer(auth);
-		} catch (IOException e1) {
-			Logger.error("Cannot decode " + AUTHORIZATION + " header. " + e1.getMessage());
-			return false;
+
+            decodedAuth = Base64.decodeBase64(auth);//new sun.misc.BASE64Decoder().decodeBuffer(auth);
 		} catch (StringIndexOutOfBoundsException e){
-			Logger.error("Cannot decode " + AUTHORIZATION + " header. " + e.getMessage());
+            Logger.error("Cannot decode " + AUTHORIZATION + " header. " + e.getMessage());
+            return false;
+        } catch (Exception e1) {
+			Logger.error("Cannot decode " + AUTHORIZATION + " header. " + e1.getMessage());
 			return false;
 		}
 		
